@@ -13,6 +13,7 @@ new_mime_guess = "4.0.1"
 phf = { version = "0.11", features = ["macros"] }
 walkdir = "2.3.2"
 reqwest = { version = "0.11", features = ["json", "stream"] }
+openssl = { version = "0.10.42", features = ["vendored"] }
 tokio = { version = "1", features = ["full"] }
 simple-error = "0.2.3"
 serde_derive = "1.0.145"
