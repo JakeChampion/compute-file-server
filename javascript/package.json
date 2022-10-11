@@ -1,0 +1,15 @@
+{
+  "name": "c-at-e-file-server",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "module": "esm",
+  "license": "MIT",
+  "devDependencies": {
+    "eslint": "^8.25.0"
+  },
+  "dependencies": {
+    "mrmime": "^1.0.1",
+    "range-parser": "^1.2.1"
+  }
+}
