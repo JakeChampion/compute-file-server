@@ -1,0 +1,32 @@
+# This file describes a Fastly Compute@Edge package. To learn more visit:
+# https://developer.fastly.com/reference/fastly-toml/
+
+authors = ["jchampion@fastly.com"]
+description = ""
+language = "rust"
+manifest_version = 2
+name = "example"
+service_id = "0kgVQQYXCziVygVQyklBxH"
+
+[scripts]
+  build = "cargo build --bin fastly-compute-project --release --target wasm32-wasi --color always"
+
+[local_server]
+
+[local_server.object_store]
+
+[[local_server.object_store.site]]
+key = "/index.html__metadata__"
+data = '{"ETag":"W/\"hcLSjHoQuVSj/nBwVT/pbCljV3k8B1YBoZt1WQDVe+Y=\"","Last-Modified":"Wed, 12 Oct 2022 14:30:30 GMT","Content-Type":"text/html"}'
+
+[[local_server.object_store.site]]
+key = "/index.html"
+path = "../../site/index.html"
+
+[[local_server.object_store.site]]
+key = "/styles.css__metadata__"
+data = '{"ETag":"W/\"Ma77dlzUAj0tukXTVGZNuiDUH9nb1dE0vnGVZCswheM=\"","Last-Modified":"Wed, 12 Oct 2022 14:28:07 GMT","Content-Type":"text/css"}'
+
+[[local_server.object_store.site]]
+key = "/styles.css"
+path = "../../site/styles.css"

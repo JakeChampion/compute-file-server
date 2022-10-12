@@ -1,0 +1,12 @@
+[package]
+name = "fastly-compute-project"
+version = "1.0.0"
+authors = []
+edition = "2018"
+
+[profile.release]
+debug = 1
+
+[dependencies]
+fastly = "^0.8.0"
+c-at-e-file-server = { path = "../../libraries/rust" }

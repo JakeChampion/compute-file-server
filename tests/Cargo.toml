@@ -1,0 +1,13 @@
+[package]
+name = "tests"
+version = "1.0.0"
+edition = "2021"
+publish = false
+
+[dependencies]
+reqwest = { version = "0.11", features = ["json", "stream"] }
+openssl = { version = "0.10.42", features = ["vendored"] }
+tokio = { version = "1", features = ["full"] }
+futures = "0.3.24"
+httpdate = "1.0.2"
+bytes = "1.2.1"

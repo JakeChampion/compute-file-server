@@ -1,0 +1,15 @@
+{
+  "license": "MIT",
+  "devDependencies": {
+    "@fastly/js-compute": "^0.5.2"
+  },
+  "scripts": {
+    "prebuild": "esbuild src/index.js --target=es2020 --platform=browser --bundle --outfile=bin/index.js",
+    "build": "js-compute-runtime bin/index.js bin/main.wasm",
+    "deploy": "fastly compute deploy",
+    "start": "fastly compute serve"
+  },
+  "dependencies": {
+    "esbuild": "^0.15.10"
+  }
+}
