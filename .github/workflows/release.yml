@@ -3,17 +3,14 @@ on:
   push:
     branches: [main]
     tags-ignore: [dev]
-  pull_request:
 defaults:
   run:
     shell: bash
-
 # Cancel any in-flight jobs for the same PR/branch so there's only one active
 # at a time
 concurrency:
   group: ${{ github.workflow }}-${{ github.ref }}
   cancel-in-progress: true
-
 jobs:
   build-cli:  
     runs-on: ${{ matrix.os }}
@@ -23,54 +20,76 @@ jobs:
         working-directory: cli
     strategy:
       matrix:
-        include:
-        - build: x86_64-linux
-          os: ubuntu-latest
-        - build: x86_64-macos
-          os: macos-latest
-        - build: aarch64-macos
-          os: macos-latest
-          target: aarch64-apple-darwin
-        - build: x86_64-windows
-          os: windows-latest
-        # - build: x86_64-mingw
-        #   os: windows-latest
-        #   target: x86_64-pc-windows-gnu
-        - build: aarch64-linux
-          os: ubuntu-latest
-          target: aarch64-unknown-linux-gnu
-        - build: s390x-linux
-          os: ubuntu-latest
-          target: s390x-unknown-linux-gnu
+        include: 
+          - target: aarch64-unknown-linux-gnu
+            os: ubuntu-latest
+          - target: x86_64-apple-darwin
+            os: macos-latest
+          - target: x86_64-pc-windows-gnu
+            os: windows-latest
+          - target: x86_64-pc-windows-msvc
+            os: windows-latest
+          - target: x86_64-unknown-linux-gnu
+            os: ubuntu-latest
+          - target: aarch64-apple-darwin
+            os: macos-latest
+          - target: aarch64-pc-windows-msvc
+            os: windows-latest
+          - target: aarch64-unknown-linux-musl
+            os: ubuntu-latest
+          - target: arm-unknown-linux-gnueabi
+            os: ubuntu-latest
+          - target: arm-unknown-linux-gnueabihf
+            os: ubuntu-latest
+          - target: armv7-unknown-linux-gnueabihf
+            os: ubuntu-latest
+          - target: mips-unknown-linux-gnu
+            os: ubuntu-latest
+          - target: mips64-unknown-linux-gnuabi64
+            os: ubuntu-latest
+          - target: mips64el-unknown-linux-gnuabi64
+            os: ubuntu-latest
+          - target: mipsel-unknown-linux-gnu
+            os: ubuntu-latest
+          - target: powerpc-unknown-linux-gnu
+            os: ubuntu-latest
+          - target: powerpc64-unknown-linux-gnu
+            os: ubuntu-latest
+          - target: powerpc64le-unknown-linux-gnu
+            os: ubuntu-latest
+          - target: riscv64gc-unknown-linux-gnu
+            os: ubuntu-latest
+          - target: s390x-unknown-linux-gnu
+            os: ubuntu-latest
+          - target: x86_64-unknown-linux-musl
+            os: ubuntu-latest
     steps:
     - uses: actions/checkout@v2
+    - name: Install rust
+      uses: actions-rs/toolchain@v1
       with:
-        submodules: true
-    - uses: ./.github/actions/install-rust
-    - uses: ./.github/actions/binary-compatible-builds
-      with:
-        name: ${{ matrix.build }}
-    - run: |
-        echo CARGO_BUILD_TARGET=${{ matrix.target }} >> $GITHUB_ENV
-        rustup target add ${{ matrix.target }}
-      if: matrix.target != ''
+        toolchain: stable
+        profile: minimal
+        override: true
+        target: ${{ matrix.target }}
     # So that windows uses StrawberryPerl which uses windows path separators
-    - run: rm /usr/bin/perl
-      if: matrix.build == 'x86_64-windows'
+    - run: rm -f /usr/bin/perl
+      if: matrix.os == 'windows-latest'
     - uses: Swatinem/rust-cache@v2
       with:
         workspaces: "cli"
-
-    - run: $CENTOS cargo build --release --locked
-
-    # Assemble release artifats appropriate for this platform, then upload them
-    # unconditionally to this workflow's files so we have a copy of them.
-    - run: ../ci/build-tarballs.sh "${{ matrix.build }}" "${{ matrix.target }}"
+    - name: Build
+      uses: actions-rs/cargo@v1
+      with:
+        command: build
+        args: --manifest-path cli/Cargo.toml --release --locked --verbose --target=${{ matrix.target }}
+        use-cross: true
+    - run: ../ci/build-tarballs.sh "${{ matrix.target }}" "${{ matrix.target }}"
     - uses: actions/upload-artifact@v1
       with:
-        name: bins-${{ matrix.build }}
+        name: bins-${{ matrix.target }}
         path: cli/dist
-  publish:
+  publish-cli:
     needs: [build-cli]
     runs-on: ubuntu-latest
     steps:
@@ -78,7 +97,25 @@ jobs:
       - uses: actions/download-artifact@v3
         with:
           path: cli/dist
-    
+      - name: Publish Release
+        uses: softprops/action-gh-release@v1
+        if: github.event_name == 'push' && (github.ref == 'refs/heads/main' || startsWith(github.ref, 'refs/tags/v'))
+        with:
+          name: ${{ github.ref_name }}
+          tag_name: ${{ github.ref_name }}
+          prerelease: ${{ github.ref_name == 'main' && true || false }}
+          files: "cli/dist/**/*"
+  publish-javascript-library:
+    runs-on: ubuntu-latest
+    permissions: 
+      contents: read
+      packages: write 
+    defaults:
+      run:
+        shell: bash
+        working-directory: libraries/javascript
+    steps:
+      - uses: actions/checkout@v2
       - name: Calculate tag name
         run: |
           name=dev
@@ -88,17 +125,14 @@ jobs:
           echo ::set-output name=val::$name
           echo TAG=$name >> $GITHUB_ENV
         id: tagname
-
-      # ... and if this was an actual push (tag or `main`) then we publish a
-      # new release. This'll automatically publish a tag release or update `dev`
-      # with this `sha`. Note that `continue-on-error` is set here so if this hits
-      # a bug we can go back and fetch and upload the release ourselves.
-      - run: cd .github/actions/github-release && npm install --production
-      - name: Publish Release
-        uses: ./.github/actions/github-release
-        if: github.event_name == 'push' && (github.ref == 'refs/heads/main' || startsWith(github.ref, 'refs/tags/v'))
+      - uses: actions/setup-node@v3
         with:
-          files: "cli/dist/*"
-          token: ${{ secrets.GITHUB_TOKEN }}
-          name: ${{ steps.tagname.outputs.val }}
-        continue-on-error: true
+          node-version: '16.x'
+          registry-url: 'https://npm.pkg.github.com'
+          # Defaults to the user or organization that owns the workflow file
+          scope: '@jakechampion'
+      - run: npm ci
+      - run: npm version "0.0.0-$GITHUB_SHA"
+      - run: npm publish --tag dev --registry 'https://npm.pkg.github.com'
+        env:
+          NODE_AUTH_TOKEN: ${{ secrets.GITHUB_TOKEN }}

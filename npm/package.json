@@ -1,5 +1,5 @@
 {
-  "name": "@fastly/c-at-e-file-server-cli",
+  "name": "@jakechampion/c-at-e-file-server-cli",
   "version": "1.5.56",
   "description": "Fastly File Server uploads files to Fastly for serving directly from within Compute@Edge applications. Upload any type of file: images, text, video etc and serve directly from Fastly. It is ideal for serving files built from a static site generator such as 11ty.",
   "type": "module",
