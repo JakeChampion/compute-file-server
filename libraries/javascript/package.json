@@ -1,7 +1,7 @@
 {
-  "name": "c-at-e-file-server",
+  "name": "@jakechampion/c-at-e-file-server",
   "version": "1.0.0",
-  "description": "",
+  "description": "JavaScript library used to serve files from Fastly Object Store.",
   "main": "index.js",
   "module": "esm",
   "license": "MIT",
@@ -10,5 +10,17 @@
   },
   "dependencies": {
     "range-parser": "^1.2.1"
-  }
+  },
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "author": "",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/JakeChampion/c-at-e-file-server.git"
+  },
+  "bugs": {
+    "url": "https://github.com/JakeChampion/c-at-e-file-server/issues"
+  },
+  "homepage": "https://github.com/JakeChampion/c-at-e-file-server#readme"
 }

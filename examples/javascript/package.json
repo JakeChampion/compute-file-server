@@ -10,6 +10,7 @@
     "start": "fastly compute serve"
   },
   "dependencies": {
+    "c-at-e-file-server": "file:../../libraries/javascript",
     "esbuild": "^0.15.10"
   }
 }
