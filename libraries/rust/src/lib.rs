@@ -43,13 +43,11 @@ pub fn get(store_name: &str, request: Request) -> Result<Option<Response>, Error
     }
     let metadata = metadata.expect("Metadata is valid");
     let metadata: Metadata = serde_json::from_str(&metadata.into_string())?;
-    println!("range -- {:?}", request.get_header_str("range"));
     let response = check_preconditions(request, &metadata)?;
     if let (Some(response), _) = response {
         return Ok(Some(response));
     }
     let request = response.1;
-    println!("range -- {:?}", request.get_header_str("range"));
     
     let item = store.lookup(&path)?;
 
@@ -98,7 +96,7 @@ pub fn get(store_name: &str, request: Request) -> Result<Option<Response>, Error
                                 }
                             } else {
                                 let mut body = fastly::Body::new();
-                                let boundary = "--3d6b6a416f9b5".as_bytes();
+                                let boundary = "\n--3d6b6a416f9b5\n".as_bytes();
                                 let mime = headers.get("content-type");
                                 let mime_type = match mime {
                                     Some(mime) => {
@@ -112,13 +110,11 @@ pub fn get(store_name: &str, request: Request) -> Result<Option<Response>, Error
                                     "multipart/byteranges; boundary=3d6b6a416f9b5".parse()?,
                                 );
                                 let mut length = boundary.len();
-                                // println!("{:?}", subranges);
                                 for range in subranges {
                                     let start: usize = range.start.try_into()?;
                                     let end: usize = range.length.try_into()?;
                                     let end: usize = start + end - 1;
-                                    println!("start: {} -- end: {}", start, end);
-                                    body.write_bytes(&[b"\n", boundary, b"\n"].concat());
+                                    body.write_bytes(boundary);
                                     length += boundary.len();
                                     if let Some(ref mime_type) = mime_type {
                                         body.write_bytes(&mime_type);
@@ -211,7 +207,6 @@ fn check_preconditions(
     // - if false, respond 412 (Precondition Failed) unless it can be determined that the state-changing request has already succeeded (see Section 13.1.1)
     let mut header = request.get_header("if-match");
     if let Some(header) = header {
-        println!("!if_match({:?}, {}) -- {}", metadata, header.to_str()?, !if_match(metadata, header.to_str()?));
         if !if_match(metadata, header.to_str()?) {
             return Ok((Some(Response::from_status(412)), request));
         }
@@ -236,7 +231,6 @@ fn check_preconditions(
     let get = "GET";
     let head = "HEAD";
     if let Some(header) = header {
-        println!("!if_none_match({:?}, {}) -- {}", metadata, header.to_str()?, !if_none_match(metadata, header.to_str()?));
         if !if_none_match(metadata, header.to_str()?) {
             if method == get || method == head {
                 let mut response = Response::from_status(304);
@@ -271,7 +265,6 @@ fn check_preconditions(
         if method == get || method == head {
             header = request.get_header("if-modified-since");
             if let Some(header) = header {
-                println!("!if_modified_since({:?}, {}) -- {}", metadata, header.to_str()?, !if_modified_since(metadata, header.to_str()?));
                 if !if_modified_since(metadata, header.to_str()?) {
                     let mut response = Response::from_status(304);
                     response.set_header(
@@ -307,8 +300,6 @@ fn check_preconditions(
         if request.contains_header("range") {
             header = request.get_header("if-range");
             if let Some(header) = header {
-                println!("range -- {}", request.get_header("range").unwrap().to_str()?);
-                println!("!if_range({:?}, {}) -- {}", metadata, header.to_str()?, !if_range(metadata, header.to_str()?));
                 if !if_range(metadata, header.to_str()?) {
                     // We delete the range headers so that the `get` function will return the full body
                     request.remove_header("range");
@@ -372,7 +363,6 @@ fn if_match(validation_fields: &Metadata, header: &str) -> bool {
         if split_list(header)
             .into_iter()
             .any(|etag| {
-                println!("strong_match({}, {}) -- {}",etag, &validation_fields.etag, strong_match(etag, &validation_fields.etag));
                 strong_match(etag, &validation_fields.etag)
             })
         {
@@ -442,7 +432,6 @@ fn if_modified_since(validation_fields: &Metadata, header: &str) -> bool {
 // https://httpwg.org/specs/rfc9110.html#field.if-range
 fn if_range(validation_fields: &Metadata, header: &str) -> bool {
     let date = httpdate::parse_http_date(header);
-    println!("date: {:?}", date);
     if let Ok(date) = date {
         // To evaluate a received If-Range header field containing an HTTP-date:
         // 1. If the HTTP-date validator provided is not a strong validator in the sense defined by Section 8.8.2.2, the condition is false.

@@ -3,7 +3,6 @@ on:
   push:
     branches: [main]
     tags-ignore: [dev]
-  pull_request:
 defaults:
   run:
     shell: bash
@@ -70,7 +69,7 @@ jobs:
       with:
         name: bins-${{ matrix.build }}
         path: cli/dist
-  publish:
+  publish-cli:
     needs: [build-cli]
     runs-on: ubuntu-latest
     steps:
@@ -102,3 +101,25 @@ jobs:
           token: ${{ secrets.GITHUB_TOKEN }}
           name: ${{ steps.tagname.outputs.val }}
         continue-on-error: true
+  publish-javascript-library:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v2
+      - name: Calculate tag name
+        run: |
+          name=dev
+          if [[ $GITHUB_REF == refs/tags/v* ]]; then
+            name=${GITHUB_REF:10}
+          fi
+          echo ::set-output name=val::$name
+          echo TAG=$name >> $GITHUB_ENV
+        id: tagname
+      - uses: actions/setup-node@v3
+        with:
+          node-version: '16.x'
+          registry-url: 'https://npm.pkg.github.com'
+      - run: npm ci
+      - run: npm version "0.0.0-${{env.GITHUB_SHA}}"
+      - run: npm publish --tag dev
+        env:
+          NODE_AUTH_TOKEN: ${{ secrets.GITHUB_TOKEN }}

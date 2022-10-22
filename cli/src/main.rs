@@ -879,17 +879,22 @@ async fn local(sub_matches: &clap::ArgMatches) -> Result<(), Box<dyn std::error:
         .get_key_value("local_server")
         .map(|a| a.1.to_owned())
         .unwrap_or_else(|| toml_edit::table());
-    let mut object_store = local_server.as_table_mut().unwrap()
+    let mut object_store = local_server
+        .as_table_mut()
+        .unwrap()
         .get_key_value(&format!("object_store"))
         .map(|a| a.1.to_owned())
         .unwrap_or_else(|| toml_edit::table());
-        
-        
+
     let mut site = toml_edit::array();
     for entry in entries {
         let path = path.clone();
         let entry_path = entry.path().to_string_lossy().to_string();
-        let extension = entry.path().extension().map(|e| e.to_string_lossy().to_string()).unwrap_or("".to_string());
+        let extension = entry
+            .path()
+            .extension()
+            .map(|e| e.to_string_lossy().to_string())
+            .unwrap_or("".to_string());
         let normalised_entry = entry.path().strip_prefix(path).unwrap();
         let normalised_path = "/".to_owned() + &normalised_entry.to_string_lossy();
         let key = &normalised_path;
@@ -902,26 +907,32 @@ async fn local(sub_matches: &clap::ArgMatches) -> Result<(), Box<dyn std::error:
         let metadata = serde_json::to_string(&Metadata {
             etag: format!("W/\"{}\"", sha),
             last_modified: fmt_http_date(file_metadata.modified()?),
-            content_type: lookup(&extension).map(|content_type| content_type.to_string())
+            content_type: lookup(&extension).map(|content_type| content_type.to_string()),
         })?;
         let mut entry = toml_edit::table();
-        entry.as_table_mut()
+        entry
+            .as_table_mut()
             .unwrap()
             .insert("key", toml_edit::value(metadata_key));
-            entry.as_table_mut().unwrap().insert(
-            "data",
-            toml_edit::value(metadata.clone()),
-        );
-        site.as_array_of_tables_mut().unwrap().push(entry.as_table().unwrap().to_owned());
+        entry
+            .as_table_mut()
+            .unwrap()
+            .insert("data", toml_edit::value(metadata.clone()));
+        site.as_array_of_tables_mut()
+            .unwrap()
+            .push(entry.as_table().unwrap().to_owned());
         let mut entry = toml_edit::table();
-        entry.as_table_mut()
-        .unwrap()
-        .insert("key", toml_edit::value(key));
-        entry.as_table_mut().unwrap().insert(
-            "path",
-            toml_edit::value(entry_path),
-        );
-        site.as_array_of_tables_mut().unwrap().push(entry.as_table().unwrap().to_owned());
+        entry
+            .as_table_mut()
+            .unwrap()
+            .insert("key", toml_edit::value(key));
+        entry
+            .as_table_mut()
+            .unwrap()
+            .insert("path", toml_edit::value(entry_path));
+        site.as_array_of_tables_mut()
+            .unwrap()
+            .push(entry.as_table().unwrap().to_owned());
     }
     object_store.as_table_mut().unwrap().insert(name, site);
     local_server
