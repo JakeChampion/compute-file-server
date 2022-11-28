@@ -735,7 +735,7 @@ async fn upload(sub_matches: &clap::ArgMatches) -> Result<(), Box<dyn std::error
         .get_one::<PathBuf>("path")
         .expect("required in clap");
 
-    let entries = WalkDir::new(path)
+    let entries = WalkDir::new(path).follow_links(true)
         .into_iter()
         .filter_map(Result::ok)
         .filter(|e| !e.file_type().is_dir())
@@ -868,7 +868,7 @@ async fn local(sub_matches: &clap::ArgMatches) -> Result<(), Box<dyn std::error:
         .get_one::<PathBuf>("toml")
         .expect("required in clap");
 
-    let entries = WalkDir::new(path)
+    let entries = WalkDir::new(path).follow_links(true)
         .into_iter()
         .filter_map(Result::ok)
         .filter(|e| !e.file_type().is_dir())
