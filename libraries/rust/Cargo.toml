@@ -1,6 +1,6 @@
 [package]
 name = "c-at-e-file-server"
-version = "0.0.1-main"
+version = "0.0.2-main"
 edition = "2021"
 description = "Library used to serve files from Fastly Object Store."
 license = "MIT"

@@ -1,6 +1,6 @@
 {
   "name": "@jakechampion/c-at-e-file-server-cli",
-  "version": "0.0.1-main",
+  "version": "0.0.2-main",
   "description": "Uploads files to Fastly for serving directly from within Compute@Edge applications. Upload any type of file: images, text, video etc and serve directly from Fastly. It is ideal for serving files built from a static site generator such as 11ty.",
   "type": "module",
   "publishConfig": {
@@ -23,10 +23,10 @@
     "c-at-e-file-server": "./c-at-e-file-server.js"
   },
   "optionalDependencies": {
-    "@jakechampion/c-at-e-file-server-darwin-arm64": "0.0.1-main",
-    "@jakechampion/c-at-e-file-server-darwin-x64": "0.0.1-main",
-    "@jakechampion/c-at-e-file-server-linux-x64": "0.0.1-main",
-    "@jakechampion/c-at-e-file-server-win32-x64": "0.0.1-main"
+    "@jakechampion/c-at-e-file-server-darwin-arm64": "0.0.2-main",
+    "@jakechampion/c-at-e-file-server-darwin-x64": "0.0.2-main",
+    "@jakechampion/c-at-e-file-server-linux-x64": "0.0.2-main",
+    "@jakechampion/c-at-e-file-server-win32-x64": "0.0.2-main"
   },
   "license": "MIT",
   "repository": {

@@ -1,6 +1,6 @@
 {
   "name": "@jakechampion/c-at-e-file-server",
-  "version": "0.0.1-main",
+  "version": "0.0.2-main",
   "description": "JavaScript library used to serve files from Fastly Object Store.",
   "main": "index.js",
   "type": "module",
