@@ -3,7 +3,7 @@
   "version": "0.0.1-main",
   "description": "JavaScript library used to serve files from Fastly Object Store.",
   "main": "index.js",
-  "module": "esm",
+  "type": "module",
   "license": "MIT",
   "devDependencies": {
     "eslint": "^8.25.0"
