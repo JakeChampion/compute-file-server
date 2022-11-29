@@ -1,0 +1,21 @@
+{
+    "name": "@jakechampion/c-at-e-file-server-darwin-x64",
+    "bin": {
+        "c-at-e-file-server-darwin-x64": "c-at-e-file-server"
+    },
+    "type": "module",
+    "version": "0.0.1-main",
+    "main": "index.js",
+    "description": "The macOS 64-bit binary for @jakechampion/c-at-e-file-server-cli, which uploads files to Fastly for serving directly from within Compute@Edge applications. Upload any type of file: images, text, video etc and serve directly from Fastly. It is ideal for serving files built from a static site generator such as 11ty.",
+    "license": "MIT",
+    "preferUnplugged": false,
+    "os": [
+        "darwin"
+    ],
+    "cpu": [
+        "x64"
+    ],
+    "publishConfig": {
+        "access": "public"
+    }
+}

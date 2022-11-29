@@ -1,7 +1,11 @@
 [package]
 name = "c-at-e-file-server"
-version = "0.1.0"
+version = "0.0.1-main"
 edition = "2021"
+description = "Uploads files to Fastly for serving directly from within Compute@Edge applications. Upload any type of file: images, text, video etc and serve directly from Fastly. It is ideal for serving files built from a static site generator such as 11ty."
+license = "MIT"
+license-file = "LICENSE"
+repository = "https://github.com/jakeChampion/c-at-e-file-server"
 
 # See more keys and their definitions at https://doc.rust-lang.org/cargo/reference/manifest.html
 

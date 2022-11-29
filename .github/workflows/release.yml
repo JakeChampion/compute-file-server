@@ -87,34 +87,34 @@ jobs:
           tag_name: ${{ github.ref_name }}
           prerelease: ${{ github.ref_name == 'main' && true || false }}
           files: "cli/dist/**/*"
-  publish-javascript-library:
-    runs-on: ubuntu-latest
-    permissions: 
-      contents: read
-      packages: write 
-    defaults:
-      run:
-        shell: bash
-        working-directory: libraries/javascript
-    steps:
-      - uses: actions/checkout@v2
-      - name: Calculate tag name
-        run: |
-          name=dev
-          if [[ $GITHUB_REF == refs/tags/v* ]]; then
-            name=${GITHUB_REF:10}
-          fi
-          echo ::set-output name=val::$name
-          echo TAG=$name >> $GITHUB_ENV
-        id: tagname
-      - uses: actions/setup-node@v3
-        with:
-          node-version: '16.x'
-          registry-url: 'https://npm.pkg.github.com'
-          # Defaults to the user or organization that owns the workflow file
-          scope: '@jakechampion'
-      - run: npm ci
-      - run: npm version "0.0.0-$GITHUB_SHA"
-      - run: npm publish --tag dev --registry 'https://npm.pkg.github.com'
-        env:
-          NODE_AUTH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+  # publish-javascript-library:
+  #   runs-on: ubuntu-latest
+  #   permissions: 
+  #     contents: read
+  #     packages: write 
+  #   defaults:
+  #     run:
+  #       shell: bash
+  #       working-directory: libraries/javascript
+  #   steps:
+  #     - uses: actions/checkout@v2
+  #     - name: Calculate tag name
+  #       run: |
+  #         name=dev
+  #         if [[ $GITHUB_REF == refs/tags/v* ]]; then
+  #           name=${GITHUB_REF:10}
+  #         fi
+  #         echo ::set-output name=val::$name
+  #         echo TAG=$name >> $GITHUB_ENV
+  #       id: tagname
+  #     - uses: actions/setup-node@v3
+  #       with:
+  #         node-version: '16.x'
+  #         registry-url: 'https://npm.pkg.github.com'
+  #         # Defaults to the user or organization that owns the workflow file
+  #         scope: '@jakechampion'
+  #     - run: npm ci
+  #     - run: npm version "0.0.0-$GITHUB_SHA"
+  #     - run: npm publish --tag dev --registry 'https://npm.pkg.github.com'
+  #       env:
+  #         NODE_AUTH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
