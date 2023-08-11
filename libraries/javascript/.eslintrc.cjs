@@ -4,7 +4,7 @@ module.exports = {
         "serviceworker": true,
     },
     "globals": {
-        "ObjectStore": true,
+        "KVStore": true,
     },
     "extends": "eslint:recommended",
     "overrides": [
