@@ -26,7 +26,7 @@ export async function get(store_name, request) {
 
     const metadataPath = path + '__metadata__'
 
-    let metadata = await (new ObjectStore(store_name)).get(metadataPath)
+    let metadata = await (new KVStore(store_name)).get(metadataPath)
     if (metadata == null) {
         return null
     }
@@ -39,7 +39,7 @@ export async function get(store_name, request) {
         return response;
     }
     
-    const item = await (new ObjectStore(store_name)).get(path)
+    const item = await (new KVStore(store_name)).get(path)
     
     if (item == null) {
         return null
