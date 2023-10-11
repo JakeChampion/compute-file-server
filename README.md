@@ -10,7 +10,7 @@ Serve the files from your Compute@Edge application.
 
 ## Usage
 
-- You will need to install the CLI application used to upload files to Fastly.
+- You will need to install the CLI application used to upload files to Fastly. `cargo install c-at-e-file-server-cli`
 - Upload the files `c-at-e-file-server upload --name 'my-site' --token "$(fastly profile token)" -- my-folder-of-files/`
 - Create your Compute@Edge application. We have examples for [Rust](./examples/rust/) and [JavaScript](./examples/javascript/).
 - Copy your Compute@Edge service_id from the `fastly.toml` file 
