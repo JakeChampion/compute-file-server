@@ -1,6 +1,6 @@
 {
   "name": "@jakechampion/compute-file-server-cli",
-  "version": "0.0.2-main",
+  "version": "1.1.0",
   "description": "Uploads files to Fastly for serving directly from within Fastly Compute applications. Upload any type of file: images, text, video etc and serve directly from Fastly. It is ideal for serving files built from a static site generator such as 11ty.",
   "type": "module",
   "publishConfig": {
@@ -23,10 +23,10 @@
     "compute-file-server": "./compute-file-server.js"
   },
   "optionalDependencies": {
-    "@jakechampion/compute-file-server-darwin-arm64": "0.0.2-main",
-    "@jakechampion/compute-file-server-darwin-x64": "0.0.2-main",
-    "@jakechampion/compute-file-server-linux-x64": "0.0.2-main",
-    "@jakechampion/compute-file-server-win32-x64": "0.0.2-main"
+    "@jakechampion/compute-file-server-darwin-arm64": "1.1.0",
+    "@jakechampion/compute-file-server-darwin-x64": "1.1.0",
+    "@jakechampion/compute-file-server-linux-x64": "1.1.0",
+    "@jakechampion/compute-file-server-win32-x64": "1.1.0"
   },
   "license": "MIT",
   "repository": {

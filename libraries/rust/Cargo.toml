@@ -1,6 +1,6 @@
 [package]
 name = "compute-file-server"
-version = "0.0.2-main"
+version = "1.1.0"
 edition = "2021"
 description = "Library used to serve files from Fastly Object Store."
 license = "MIT"

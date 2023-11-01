@@ -1,6 +1,6 @@
 [package]
 name = "compute-file-server-cli"
-version = "0.0.2-main"
+version = "1.1.0"
 edition = "2021"
 description = "Uploads files to Fastly for serving directly from within Fastly Compute applications. Upload any type of file: images, text, video etc and serve directly from Fastly. It is ideal for serving files built from a static site generator such as 11ty."
 license = "MIT"
