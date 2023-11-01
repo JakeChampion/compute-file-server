@@ -12,47 +12,47 @@ const input = process.argv.slice(2).at(0);
 const tag = input ? `${input}` : 'dev';
 
 let packages = {
-    'c-at-e-file-server-darwin-arm64': {
-        releaseAsset: `c-at-e-file-server-dev-aarch64-apple-darwin.tar.xz`,
-        binaryAsset: 'c-at-e-file-server',
-        description: 'The macOS 64-bit binary for @jakechampion/c-at-e-file-server-cli, which uploads files to Fastly for serving directly from within Compute@Edge applications. Upload any type of file: images, text, video etc and serve directly from Fastly. It is ideal for serving files built from a static site generator such as 11ty.',
+    'compute-file-server-darwin-arm64': {
+        releaseAsset: `compute-file-server-dev-aarch64-apple-darwin.tar.xz`,
+        binaryAsset: 'compute-file-server',
+        description: 'The macOS 64-bit binary for @jakechampion/compute-file-server-cli, which uploads files to Fastly for serving directly from within Fastly Compute applications. Upload any type of file: images, text, video etc and serve directly from Fastly. It is ideal for serving files built from a static site generator such as 11ty.',
         os: 'darwin',
         cpu: 'arm64',
     },
-    'c-at-e-file-server-darwin-x64': {
-        releaseAsset: `c-at-e-file-server-dev-x86_64-apple-darwin.tar.xz`,
-        binaryAsset: 'c-at-e-file-server',
-        description: 'The macOS 64-bit binary for @jakechampion/c-at-e-file-server-cli, which uploads files to Fastly for serving directly from within Compute@Edge applications. Upload any type of file: images, text, video etc and serve directly from Fastly. It is ideal for serving files built from a static site generator such as 11ty.',
+    'compute-file-server-darwin-x64': {
+        releaseAsset: `compute-file-server-dev-x86_64-apple-darwin.tar.xz`,
+        binaryAsset: 'compute-file-server',
+        description: 'The macOS 64-bit binary for @jakechampion/compute-file-server-cli, which uploads files to Fastly for serving directly from within Fastly Compute applications. Upload any type of file: images, text, video etc and serve directly from Fastly. It is ideal for serving files built from a static site generator such as 11ty.',
         os: 'darwin',
         cpu: 'x64',
     },
-    'c-at-e-file-server-linux-x64': {
-        releaseAsset: `c-at-e-file-server-dev-x86_64-unknown-linux-gnu.tar.xz`,
-        binaryAsset: 'c-at-e-file-server',
-        description: 'The Linux 64-bit binary for @jakechampion/c-at-e-file-server-cli, which uploads files to Fastly for serving directly from within Compute@Edge applications. Upload any type of file: images, text, video etc and serve directly from Fastly. It is ideal for serving files built from a static site generator such as 11ty.',
+    'compute-file-server-linux-x64': {
+        releaseAsset: `compute-file-server-dev-x86_64-unknown-linux-gnu.tar.xz`,
+        binaryAsset: 'compute-file-server',
+        description: 'The Linux 64-bit binary for @jakechampion/compute-file-server-cli, which uploads files to Fastly for serving directly from within Fastly Compute applications. Upload any type of file: images, text, video etc and serve directly from Fastly. It is ideal for serving files built from a static site generator such as 11ty.',
         os: 'linux',
         cpu: 'x64',
     },
-    'c-at-e-file-server-win32-x64': {
-        releaseAsset: `c-at-e-file-server-dev-x86_64-pc-windows-msvc.tar.xz`,
-        binaryAsset: 'c-at-e-file-server.exe',
-        description: 'The Windows 64-bit binary for @jakechampion/c-at-e-file-server-cli, which uploads files to Fastly for serving directly from within Compute@Edge applications. Upload any type of file: images, text, video etc and serve directly from Fastly. It is ideal for serving files built from a static site generator such as 11ty.',
+    'compute-file-server-win32-x64': {
+        releaseAsset: `compute-file-server-dev-x86_64-pc-windows-msvc.tar.xz`,
+        binaryAsset: 'compute-file-server.exe',
+        description: 'The Windows 64-bit binary for @jakechampion/compute-file-server-cli, which uploads files to Fastly for serving directly from within Fastly Compute applications. Upload any type of file: images, text, video etc and serve directly from Fastly. It is ideal for serving files built from a static site generator such as 11ty.',
         os: 'win32',
         cpu: 'x64',
     },
 }
 
-let response = await fetch(`https://api.github.com/repos/jakechampion/c-at-e-file-server/releases/tags/${tag}`)
+let response = await fetch(`https://api.github.com/repos/jakechampion/compute-file-server/releases/tags/${tag}`)
 if (!response.ok) {
-    console.error(`Response from https://api.github.com/repos/jakechampion/c-at-e-file-server/releases/tags/${tag} was not ok`, response)
+    console.error(`Response from https://api.github.com/repos/jakechampion/compute-file-server/releases/tags/${tag} was not ok`, response)
     console.error(await response.text())
     process.exit(1)
 }
 response = await response.json()
 const id = response.id
-let assets = await fetch(`https://api.github.com/repos/jakechampion/c-at-e-file-server/releases/${id}/assets`)
+let assets = await fetch(`https://api.github.com/repos/jakechampion/compute-file-server/releases/${id}/assets`)
 if (!assets.ok) {
-    console.error(`Response from https://api.github.com/repos/jakechampion/c-at-e-file-server/releases/${id}/assets was not ok`, assets)
+    console.error(`Response from https://api.github.com/repos/jakechampion/compute-file-server/releases/${id}/assets was not ok`, assets)
     console.error(await response.text())
     process.exit(1)
 }
@@ -61,7 +61,7 @@ assets = await assets.json()
 for (const [packageName, info] of Object.entries(packages)) {
     const asset = assets.find(asset => asset.name === info.releaseAsset)
     if (!asset) {
-        console.error(`Can't find an asset named ${info.releaseAsset} for the release https://github.com/jakechampion/c-at-e-file-server/releases/tag/${tag}`)
+        console.error(`Can't find an asset named ${info.releaseAsset} for the release https://github.com/jakechampion/compute-file-server/releases/tag/${tag}`)
         process.exit(1)
     }
     const packageDirectory = join(__dirname, '../', packageName.split('/').pop())
@@ -118,7 +118,7 @@ function packageJson(name, version, description, os, cpu) {
     return JSON.stringify({
         name: `@jakechampion/${name}`,
         bin: {
-            [name]: "c-at-e-file-server"
+            [name]: "compute-file-server"
         },
         type: "module",
         version,

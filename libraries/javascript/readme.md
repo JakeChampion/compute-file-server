@@ -1,4 +1,4 @@
-# c-at-e-file-server
+# compute-file-server
 
 JavaScript library used to serve files from Fastly Object Store.
 
@@ -9,7 +9,7 @@ It is ideal for serving files built from a static site generator such as 11ty.
 ### npm
 
 ```sh
-npm install c-at-e-file-server
+npm install compute-file-server
 ```
 
 ## API
@@ -35,7 +35,7 @@ The request to search for a corresponding response for.
 
 
 ```js
-import { get } from "c-at-e-file-server";
+import { get } from "compute-file-server";
 
 async function app(event) {
   const response = await get('site', request);

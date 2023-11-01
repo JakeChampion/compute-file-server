@@ -1,11 +1,11 @@
 [package]
-name = "c-at-e-file-server"
+name = "compute-file-server"
 version = "0.0.2-main"
 edition = "2021"
 description = "Library used to serve files from Fastly Object Store."
 license = "MIT"
 license-file = "LICENSE"
-repository = "https://github.com/jakeChampion/c-at-e-file-server"
+repository = "https://github.com/jakeChampion/compute-file-server"
 
 # See more keys and their definitions at https://doc.rust-lang.org/cargo/reference/manifest.html
 

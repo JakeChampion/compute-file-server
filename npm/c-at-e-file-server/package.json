@@ -1,7 +1,7 @@
 {
-  "name": "@jakechampion/c-at-e-file-server-cli",
+  "name": "@jakechampion/compute-file-server-cli",
   "version": "0.0.2-main",
-  "description": "Uploads files to Fastly for serving directly from within Compute@Edge applications. Upload any type of file: images, text, video etc and serve directly from Fastly. It is ideal for serving files built from a static site generator such as 11ty.",
+  "description": "Uploads files to Fastly for serving directly from within Fastly Compute applications. Upload any type of file: images, text, video etc and serve directly from Fastly. It is ideal for serving files built from a static site generator such as 11ty.",
   "type": "module",
   "publishConfig": {
     "access": "public"
@@ -20,21 +20,21 @@
     "node": ">=16"
   },
   "bin": {
-    "c-at-e-file-server": "./c-at-e-file-server.js"
+    "compute-file-server": "./compute-file-server.js"
   },
   "optionalDependencies": {
-    "@jakechampion/c-at-e-file-server-darwin-arm64": "0.0.2-main",
-    "@jakechampion/c-at-e-file-server-darwin-x64": "0.0.2-main",
-    "@jakechampion/c-at-e-file-server-linux-x64": "0.0.2-main",
-    "@jakechampion/c-at-e-file-server-win32-x64": "0.0.2-main"
+    "@jakechampion/compute-file-server-darwin-arm64": "0.0.2-main",
+    "@jakechampion/compute-file-server-darwin-x64": "0.0.2-main",
+    "@jakechampion/compute-file-server-linux-x64": "0.0.2-main",
+    "@jakechampion/compute-file-server-win32-x64": "0.0.2-main"
   },
   "license": "MIT",
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/jakechampion/c-at-e-file-server.git"
+    "url": "git+https://github.com/jakechampion/compute-file-server.git"
   },
   "bugs": {
-    "url": "https://github.com/jakechampion/c-at-e-file-server/issues"
+    "url": "https://github.com/jakechampion/compute-file-server/issues"
   },
-  "homepage": "https://github.com/jakechampion/c-at-e-file-server#readme"
+  "homepage": "https://github.com/jakechampion/compute-file-server#readme"
 }

@@ -25,22 +25,22 @@ if [[ $GITHUB_REF == refs/tags/v* ]]; then
   tag=${GITHUB_REF:10}
 fi
 
-bin_pkgname=c-at-e-file-server-$tag-$platform
+bin_pkgname=compute-file-server-$tag-$platform
 
 mkdir tmp/$bin_pkgname
 cp LICENSE README.md tmp/$bin_pkgname
 
 fmt=tar
 if [ "$platform" = "x86_64-windows" ]; then
-  cp target/release/c-at-e-file-server.exe tmp/$bin_pkgname
+  cp target/release/compute-file-server.exe tmp/$bin_pkgname
   fmt=zip
 elif [ "$platform" = "x86_64-mingw" ]; then
-  cp target/x86_64-pc-windows-gnu/release/c-at-e-file-server.exe tmp/$bin_pkgname
+  cp target/x86_64-pc-windows-gnu/release/compute-file-server.exe tmp/$bin_pkgname
   fmt=zip
 elif [ "$target" = "" ]; then
-  cp target/release/c-at-e-file-server tmp/$bin_pkgname
+  cp target/release/compute-file-server tmp/$bin_pkgname
 else
-  cp target/$target/release/c-at-e-file-server tmp/$bin_pkgname
+  cp target/$target/release/compute-file-server tmp/$bin_pkgname
 fi
 
 

@@ -1,6 +1,6 @@
 /// <reference types="@fastly/js-compute" />
 
-import { get } from "c-at-e-file-server";
+import { get } from "compute-file-server";
 
 addEventListener("fetch", (event) => event.respondWith(app(event)));
 

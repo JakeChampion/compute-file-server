@@ -9,4 +9,4 @@ debug = 1
 
 [dependencies]
 fastly = "^0.8.0"
-c-at-e-file-server = { path = "../../libraries/rust" }
+compute-file-server = { path = "../../libraries/rust" }

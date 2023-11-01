@@ -1,6 +1,6 @@
-# c-at-e-file-server
+# compute-file-server
 
-Fastly File Server uploads files to Fastly for serving directly from within Compute@Edge applications.
+Fastly File Server uploads files to Fastly for serving directly from within Fastly Compute applications.
 
 Upload any type of file: images, text, video etc and serve directly from Fastly.
 
@@ -13,7 +13,7 @@ It is ideal for serving files built from a static site generator such as 11ty.
 Install pre-compiled binaries via `npm`
 
 ```sh
-npm install c-at-e-file-server
+npm install compute-file-server
 ```
 
 ### Cargo
@@ -21,8 +21,8 @@ npm install c-at-e-file-server
 Compile and install via `cargo`
 
 ```sh
-git clone https://github.com/JakeChampion/c-at-e-file-server
-cd c-at-e-file-server/cli
+git clone https://github.com/JakeChampion/compute-file-server
+cd compute-file-server/cli
 cargo install --path .
 ```
 
@@ -32,13 +32,13 @@ cargo install --path .
 
 Upload files to a Fastly Object Store, creating the Object Store if it does not exist.
 
-Example: `c-at-e-file-server upload --name website-static-files -- ./folder/of/files`
+Example: `compute-file-server upload --name website-static-files -- ./folder/of/files`
 
 ```sh
-c-at-e-file-server upload
+compute-file-server upload
 Upload files
 
-Usage: c-at-e-file-server upload [OPTIONS] --name <NAME> -- <PATH>
+Usage: compute-file-server upload [OPTIONS] --name <NAME> -- <PATH>
 
 Arguments:
   <PATH>  
@@ -53,10 +53,10 @@ Options:
 
 Connect a Fastly Object Store to a Fastly Service.
 
-Example: `c-at-e-file-server link --name website-static-files --link-name files --service-id xxyyzz`
+Example: `compute-file-server link --name website-static-files --link-name files --service-id xxyyzz`
 
 ```sh
-Usage: c-at-e-file-server link [OPTIONS] --name <NAME> --link-name <LINK_NAME> --service-id <SERVICE_ID>
+Usage: compute-file-server link [OPTIONS] --name <NAME> --link-name <LINK_NAME> --service-id <SERVICE_ID>
 
 Options:
       --name <NAME>
@@ -70,10 +70,10 @@ Options:
 
 Update `fastly.toml` to contain a local Object Store containing the specified files.
 
-Example: `c-at-e-file-server local --name files --toml fastly.toml -- ./folder/of/files`
+Example: `compute-file-server local --name files --toml fastly.toml -- ./folder/of/files`
 
 ```sh
-Usage: c-at-e-file-server local --toml <TOML> --name <NAME> -- <PATH>
+Usage: compute-file-server local --toml <TOML> --name <NAME> -- <PATH>
 
 Arguments:
   <PATH>

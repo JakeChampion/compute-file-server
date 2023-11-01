@@ -1,5 +1,5 @@
 {
-  "name": "@jakechampion/c-at-e-file-server",
+  "name": "@jakechampion/compute-file-server",
   "version": "0.0.2-main",
   "description": "JavaScript library used to serve files from Fastly Object Store.",
   "main": "index.js",
@@ -17,10 +17,10 @@
   "author": "",
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/JakeChampion/c-at-e-file-server.git"
+    "url": "git+https://github.com/JakeChampion/compute-file-server.git"
   },
   "bugs": {
-    "url": "https://github.com/JakeChampion/c-at-e-file-server/issues"
+    "url": "https://github.com/JakeChampion/compute-file-server/issues"
   },
-  "homepage": "https://github.com/JakeChampion/c-at-e-file-server#readme"
+  "homepage": "https://github.com/JakeChampion/compute-file-server#readme"
 }

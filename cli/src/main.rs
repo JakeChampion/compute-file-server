@@ -452,14 +452,14 @@ struct Metadata {
 
 #[derive(Default, Debug, Clone, PartialEq, Serialize, Deserialize)]
 #[serde(rename_all = "camelCase")]
-struct ObjectStores {
-    data: Vec<ObjectStore>,
+struct KVStores {
+    data: Vec<KVStore>,
     meta: Meta,
 }
 
 #[derive(Default, Debug, Clone, PartialEq, Serialize, Deserialize)]
 #[serde(rename_all = "camelCase")]
-struct ObjectStore {
+struct KVStore {
     id: String,
     name: String,
     #[serde(rename = "created_at")]
@@ -478,7 +478,7 @@ struct Meta {
 async fn create_store(name: &str, token: &str) -> Result<String, Box<dyn std::error::Error>> {
     let client = reqwest::Client::new();
     let res = client
-        .post("https://api.fastly.com/resources/stores/object")
+        .post("https://api.fastly.com/resources/stores/kv")
         .header("Content-Type", "application/json")
         .header("Accept", "application/json")
         .header("Fastly-Key", token)
@@ -486,7 +486,7 @@ async fn create_store(name: &str, token: &str) -> Result<String, Box<dyn std::er
         .send()
         .await?;
     if res.status() == 201 {
-        Ok(res.json::<ObjectStore>().await?.id)
+        Ok(res.json::<KVStore>().await?.id)
     } else {
         bail!(format!(
             "Failed to create Object Store named `{}`. Response body contained `{}`",
@@ -503,7 +503,7 @@ async fn get_or_create_store(
     // get all stores
     let client = reqwest::Client::new();
     let res = client
-        .get("https://api.fastly.com/resources/stores/object")
+        .get("https://api.fastly.com/resources/stores/kv")
         .header("Content-Type", "application/json")
         .header("Accept", "application/json")
         .header("Fastly-Key", token)
@@ -515,7 +515,7 @@ async fn get_or_create_store(
     } else {
         // check if store already exists
         let res = res
-            .json::<ObjectStores>()
+            .json::<KVStores>()
             .await?
             .data
             .into_iter()
@@ -612,7 +612,7 @@ async fn activate_version_of_service(
 
 fn cli() -> Command {
     Command::new("fastly-file-server")
-        .about("Fastly File Server uploads files to Fastly for serving directly from within Compute@Edge applications. Upload any type of file: images, text, video etc and serve directly from Fastly. It is ideal for serving files built from a static site generator such as 11ty.")
+        .about("Fastly File Server uploads files to Fastly for serving directly from within Fastly Compute applications. Upload any type of file: images, text, video etc and serve directly from Fastly. It is ideal for serving files built from a static site generator such as 11ty.")
         .subcommand_required(true)
         .arg_required_else_help(true)
         .subcommand(
@@ -779,7 +779,7 @@ async fn upload(sub_matches: &clap::ArgMatches) -> Result<(), Box<dyn std::error
                 loop {
                     let res = client
                         .put(format!(
-                            "https://api.fastly.com/resources/stores/object/{}/keys/{}",
+                            "https://api.fastly.com/resources/stores/kv/{}/keys/{}",
                             store_id, metadata_key
                         ))
                         .header("Content-Type", "application/json")
@@ -807,7 +807,7 @@ async fn upload(sub_matches: &clap::ArgMatches) -> Result<(), Box<dyn std::error
                 loop {
                     let res = client
                         .put(format!(
-                            "https://api.fastly.com/resources/stores/object/{}/keys/{}",
+                            "https://api.fastly.com/resources/stores/kv/{}/keys/{}",
                             store_id, key
                         ))
                         .header("Content-Type", "application/json")
